@@ -24,8 +24,7 @@ Based on Kickstart.nvim with some customizations.
 
 1. Open nvim and run `:Lazy` to install plugins
 2. Run `:Mason` to install LSP servers (pyright, gopls, clangd, ruff)
-
-~~3. Run `:TSInstall all` to install Treesitter parsers~~ Don't mind the stupid AI
+3. ~~Run `:TSInstall all` to install Treesitter parsers~~ Don't mind the stupid AI
 
 ## Running Code
 
