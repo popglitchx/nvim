@@ -4,7 +4,7 @@ Based on Kickstart.nvim with some customizations.
 
 ## What's Included
 
-- ** LSP Servers**: pyright (Python), gopls (Go), clangd (C/C++)
+- **LSP Servers**: pyright (Python), gopls (Go), clangd (C/C++)
 - **Completion**: blink.cmp with luasnip
 - **Snippets**: friendly-snippets (VSCode-style)
 - **Formatter**: ruff (Python), stylua (Lua)
