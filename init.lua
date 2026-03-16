@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -205,7 +205,7 @@ vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Open file explorer' })
 -- Run current file in terminal
 vim.keymap.set('n', '<leader>r', function()
   local filetype = vim.bo.filetype
-  local filename = vim.fn.expand('%:p')
+  local filename = vim.fn.expand '%:p'
   local cmd = ''
 
   if filetype == 'python' then
@@ -233,16 +233,16 @@ vim.keymap.set('n', '<leader>r', function()
     return
   end
 
-  vim.cmd('botright split')
+  vim.cmd 'botright split'
   vim.cmd('terminal ' .. cmd)
-  vim.cmd('startinsert')
+  vim.cmd 'startinsert'
 end, { desc = 'Run current file in terminal' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -329,6 +329,9 @@ require('lazy').setup({
       },
     },
   },
+
+
+   -- This closes the whole plugin table
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -771,7 +774,7 @@ require('lazy').setup({
             'rafamadriz/friendly-snippets',
             dependencies = { 'L3MON4D3/LuaSnip' },
             config = function()
-              local ls = require('luasnip')
+              local ls = require 'luasnip'
               ls.cleanup()
               ls.snippets = {}
               require('luasnip.loaders.from_vscode').lazy_load()
@@ -829,9 +832,7 @@ require('lazy').setup({
         providers = {
           lsp = {
             transform_items = function(_, items)
-              return vim.tbl_filter(function(item)
-                return item.kind ~= vim.lsp.protocol.CompletionItemKind.Keyword
-              end, items)
+              return vim.tbl_filter(function(item) return item.kind ~= vim.lsp.protocol.CompletionItemKind.Keyword end, items)
             end,
           },
           snippets = {
@@ -861,20 +862,15 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    'Soroushsrd/glacier.vim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
-
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd 'colorscheme glacier'
+      vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
+      vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
     end,
   },
 
@@ -935,6 +931,39 @@ require('lazy').setup({
     },
   },
 
+  { -- Obsidian
+    'obsidian-nvim/obsidian.nvim',
+    version = '*',
+    lazy = true,
+    ft = 'markdown',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+    },
+    opts = {
+      legacy_commands = false,
+      workspaces = {
+        {
+          name = 'personal',
+          path = '~/notes',
+        },
+      },
+      completion = {
+        nvim_cmp = true,
+        min_chars = 2,
+      },
+      attachments = {
+        folder = 'attachments',
+      },
+      ui = {
+        enable = true,
+      },
+    },
+    config = function(_, opts)
+      require("obsidian").setup(opts)
+      vim.opt.conceallevel = 2
+    end,
+  },
+
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
@@ -949,7 +978,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommended keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
